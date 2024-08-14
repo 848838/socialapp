@@ -40,6 +40,7 @@
   position: relative;
   width: 100%;
   max-width: 100%;
+  z-index: 10000;
 }
 
 .responsive-image {
@@ -90,7 +91,7 @@ p {
 .we_are2 {
   font-size: 100px;
   color: rgb(181, 115, 76);
-  margin-top: -20px;
+  margin-top: -60px;
   width: 100%;
 
 
@@ -101,7 +102,7 @@ p {
   margin-left: 10px;
   color: rgb(255, 255, 255);
   width: 29%;
-  margin-top: 78px;
+  margin-top: 70px;
 }
 
 .we_are33 {
@@ -263,6 +264,8 @@ p {
   color: white;
   margin-top: -100px;
   font-size: 20px;
+  font-weight: 10px;
+  width: 90%;
 }
 
 .we_are23 {
@@ -270,7 +273,7 @@ p {
   text-align: center;
   font-size: 140px;
   color: rgb(181, 115, 76);
-  margin-top: -86px;
+  margin-top: -136px;
   margin-right: 1px;
 
 
@@ -293,7 +296,7 @@ p {
   text-align: center;
   font-size: 120px;
   color: rgb(181, 115, 76);
-  margin-top: -90px;
+  margin-top: -78px;
   margin-right: 100px;
 
 
@@ -383,10 +386,10 @@ p {
 
 /* footer */
 .footer {
-  background-color: rgb(35, 33, 33);
+  background-color: rgb(26, 26, 26);
   color: white;
   padding: 20px 0;
- 
+
   margin-top: 30px;
 
 }
@@ -429,6 +432,10 @@ p {
 }
 
 /* works */
+
+.about_button {
+  padding: 20px;
+}
 
 @media (max-width:600px) {
   .we_are235 {
@@ -671,6 +678,18 @@ p {
   margin: auto;
   margin-top: 30px;
 
+
+}
+
+.Butto_services12 {
+
+  width: 42%;
+  height: 49vh;
+  background-color: rgb(54, 54, 54);
+  border-radius: 20px;
+  margin: auto;
+  margin-top: 30px;
+
 }
 
 .Butto_services_data {
@@ -692,27 +711,44 @@ p {
   border: none;
   color: white;
   margin-Top: -20px;
-  margin-Left: 20px
+  margin-Left: 30px
 }
 
 
-.button_services_h4{
-  color: white; font-Size: 49px; margin-Top: 1px; width: 80%; margin-Left: 30px
-
+.button_services_h4 {
+  color: white;
+  font-Size: 70px;
+  margin-Top: -10px;
+  width: 80%;
+  margin-Left: 30px
 }
 
-.button_services_h44{
-  color: white; font-Size: 49px; margin-Top: 1px; width: 80%; margin-Left: 30px
+.button_services_h44 {
+  color: white;
+  font-Size: 70px;
+  margin-Top: -10px;
+  width: 80%;
+  margin-Left: 30px
+}
+
+.button_services_h46 {
+  color: white;
+  font-Size: 49px;
+  margin-Top: -12px;
+  width: 80%;
+  margin-Left: 10px;
 
 }
-.button_services_h46{
-  color: white; font-Size: 49px; margin-Top: 1px; width: 80%; margin-Left: 10px
+.servicespadd{
+  color: white ; font-Size: 17px ; margin-Top: -37px; margin-Left: 30px; font-Weight: 100; width: 80%;
+} 
+ .arot_services{
+  color: white ; font-Size: 17px ; margin-Top: -60px; margin-Left: 10px; font-Weight: 200; width: 100%;
 
 }
 @media (max-width:600px) {
 
   .Butto_services1 {
-
     width: 90%;
     height: 100%;
     background-color: rgb(54, 54, 54);
@@ -720,18 +756,45 @@ p {
     margin: auto;
     margin-top: 30px;
     padding: 15px;
+  }
+  .button_services_h44 {
+    color: white;
+    font-Size: 80px;
+    margin-Top: -10px;
+    width: 80%;
+    margin-Left: 30px
+  }
+  
+  .button_services_h4 {
+    color: white;
+    font-Size: 30px;
+    margin-Top: 15px;
+    width: 80%;
+    margin-Left: 20px;
+    font-family: Stretch Pro, sans-serif;
+  }
+  .servicespadd{
+    color: white ; font-Size: 17px ; margin-Top: -20px; margin-Left: 30px; font-Weight: 100; width: 80%;
+  }
+  .arot_services{
+    color: white ; font-Size: 17px ; margin-Top: -40px; margin-Left: 20px; font-Weight: 100
+  }
+  .Butto_services12 {
+    width: 90%;
+    height: 100%;
+    background-color: rgb(54, 54, 54);
+    border-radius: 20px;
+    margin: auto;
+    margin-top: 30px;
+    padding: 15px;
+  }
 
-  }.button_services_h4{
-    color: white; font-Size: 30px; margin-Top: 1px; width: 80%; margin-Left: 20px
-  
-  }
-  .button_services_h44{
-    color: white; font-Size: 37px; margin-Top: 1px; width: 80%; margin-Left: 40px
-  
-  }
-  .button_services_h46{
-    color: white; font-Size: 34px; margin-Top: 1px; width: 80%; margin-Left: 10px
-  
+  .button_services_h46 {
+    color: white;
+    font-Size: 30px;
+    margin-Top: 1px;
+    width: 100%;
+    margin-Left: 20px
   }
 
   .Butto_services_data {
@@ -862,16 +925,24 @@ p {
   display: flex;
 
   list-style: none;
-  height: 29px;
-  margin-top: 28px;
+  height: 39px;
+  margin-top: 24px;
   background-color: rgb(54, 54, 54);
   border-radius: 30px;
   color: rgb(255, 255, 255);
   list-style: none;
   text-decoration: none;
   width: 120px;
+  line-height: 35px;
+  margin-left: -10px;
 
 
+
+}
+
+.ou {
+  font-family: sans-serif, "Helvetica Neue", "Lucida Grande", Arial;
+  font-stretch: expanded;
 
 }
 
@@ -882,15 +953,29 @@ p {
 }
 
 .navbar {
-  background: rgb(4, 4, 4);
+  background: rgb(8, 8, 8);
   height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.2rem;
-  position: sticky;
+
   top: 0;
-  z-index: 10;
+  z-index: -10000;
+
+
+}
+
+.navbartwo {
+  background: rgb(83, 83, 83);
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+
+  top: 0;
+  z-index: -10000;
 
 
 }
@@ -904,6 +989,12 @@ p {
   border-radius: 30px;
 }
 
+.nav-links:hover {
+  background-color: black;
+  border-radius: 10px;
+  padding: 0 3rem;
+}
+
 .navbar-container {
   display: flex;
   justify-content: space-evenly;
@@ -912,6 +1003,13 @@ p {
   width: 100%;
   max-width: 1700px;
   padding: 0 24px;
+}
+
+.image-with-shadow {
+  float: right;
+  border-radius: 200px;
+  margin: 3px;
+
 }
 
 .nav-item {
@@ -926,7 +1024,7 @@ p {
 
 .nav-links {
   color: #fff;
-
+  transition: 0.3s;
 
   text-decoration: none;
   padding: 0 3rem;
@@ -980,4 +1078,3 @@ p {
     border: none;
   }
 }
-

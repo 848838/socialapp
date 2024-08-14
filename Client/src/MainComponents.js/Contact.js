@@ -55,7 +55,7 @@ function Contact() {
         }
     };
     return (
-        <div style={{ backgroundImage: `url(https://media.istockphoto.com/id/1273852653/photo/old-scratched-film-strip-grunge-texture-background.jpg?s=612x612&w=0&k=20&c=OTzQ4ThsRnvLhAnia1iwcE997l-XHrAlfkTZDBrLcZA=)` }}>
+        <div style={{ backgroundImage: `url(https://i.ibb.co/kVnxfK9/udpae.jpg)` }}>
             <div style={{ marginTop: 0 }} >
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
 

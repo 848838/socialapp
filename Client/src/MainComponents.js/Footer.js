@@ -7,23 +7,23 @@ function Footer() {
         <footer style={{ marginTop: 490, padding: 30 }} className="footer">
             <div className="footer-container">
                 <div className="footer-column">
-                    <img  style={{width:'100%', marginTop:-39}} src={logo} />
+                    <img  style={{width:'100%', marginTop:-69 , marginLeft:-50}} src={logo} />
                 </div>
             
                 <div className="footer-column">
                     <h3 style={{ fontWeight: '700' }} >Content </h3>
                     <div style={{ gap: 10, marginTop: 10, margin: 10 }}>
-                        <li style={{ fontWeight: 'bold', marginTop: 10 }}>Home</li>
-                        <li style={{ fontWeight: 'bold', marginTop: 10 }}>About</li>
-                        <li style={{ fontWeight: 'bold', marginTop: 10 }}>Services</li>
-                        <li style={{ fontWeight: 'bold', marginTop: 10 }}>Protfolio</li>
-                        <li style={{ fontWeight: 'bold', marginTop: 10 }}>Kasol</li>
+                        <li style={{ fontWeight: 'bold', marginTop: 10 , listStyle:"none" }}>Home</li>
+                        <li style={{ fontWeight: 'bold', marginTop: 10  , listStyle:"none" }}>About</li>
+                        <li style={{ fontWeight: 'bold', marginTop: 10  , listStyle:"none" }}>Services</li>
+                        <li  style={{ fontWeight: 'bold', marginTop: 10 , listStyle:"none" }}>Protfolio</li>
+                        
                     </div>
 
                 </div>
          
                 <div className="footer-column">
-                    <h3 style={{ fontWeight: '700' }} >Content </h3>
+                    <h3 style={{ fontWeight: '700' }} >Follow Us </h3>
                     <div style={{ gap: 10, marginTop: 10, margin: 10 }}>
                         <a style={{ textDecoration: 'none', listStyle: 'none', color: 'white', fontWeight: 'bold', marginTop: 10 }} href='https://www.instagram.com/pixel.forge_studios?igsh=MTM4Z253Y204azl2aQ==' ><li>Instagram</li> </a>
                         <a style={{ textDecoration: 'none', listStyle: 'none', color: 'white', fontWeight: 'bold', marginTop: 10 }} href='https://www.linkedin.com/in/pixel-forgestudios-b227352ba?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' ><li>linkedin</li></a>

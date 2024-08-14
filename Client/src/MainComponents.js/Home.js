@@ -57,7 +57,7 @@ function Home() {
 </div>
 
 <div style={{margin:'auto',}}>
-<button className1='about_button'>
+<button  className='about_button'>
     Get in Touch
     <i className="bi bi-chevron-right"></i>
 
@@ -78,22 +78,22 @@ function Home() {
 
             <div style={{border:'1px solid white', marginTop:14 }}></div>
             <div style={{display:'flex', justifyContent:'space-between'}}>
-                <h1 style={{color:'white', fontSize:60 , marginTop:10}}>UI/UX DESIGNS</h1>
+                <h1 style={{color:'white', fontSize:60 , marginTop:10}}>GRAPHIC DESIGNS</h1>
                 <i style={{color:'white', fontSize:90, marginTop:-10}} class="bi bi-arrow-right-short"></i>
             </div>
             <div style={{border:'1px solid white' , marginTop:14 }}></div>
             <div style={{display:'flex', justifyContent:'space-between'}}>
-                <h1 style={{color:'white', fontSize:60 , marginTop:10}}>UI/UX DESIGNS</h1>
+                <h1 style={{color:'white', fontSize:60 , marginTop:10}}>BRANDING</h1>
                 <i style={{color:'white', fontSize:90, marginTop:-10}} class="bi bi-arrow-right-short"></i>
             </div>
             <div style={{border:'1px solid white', marginTop:14  }}></div>
             <div style={{display:'flex', justifyContent:'space-between'}}>
-                <h1 style={{color:'white', fontSize:60 , marginTop:10}}>UI/UX DESIGNS</h1>
+                <h1 style={{color:'white', fontSize:60 , marginTop:10}}>SM MARKETS/MANAGEMENT</h1>
                 <i style={{color:'white', fontSize:90, marginTop:-10}} class="bi bi-arrow-right-short"></i>
             </div>
             <div style={{border:'1px solid white', marginTop:14  }}></div>
             <div style={{display:'flex', justifyContent:'space-between'}}>
-                <h1 style={{color:'white', fontSize:60 , marginTop:10}}>UI/UX DESIGNS</h1>
+                <h1 style={{color:'white', fontSize:60 , marginTop:10}}>SEO</h1>
                 <i style={{color:'white', fontSize:90, marginTop:-10}} class="bi bi-arrow-right-short"></i>
             </div>
             <div style={{border:'1px solid white', marginTop:14  }}></div>
@@ -157,9 +157,11 @@ function Home() {
 
 
 </div>
-
+<div style={{marginTop:-350}}> 
 
         <Footer/>
+</div>
+
 
     </div> 
     </>

@@ -9,13 +9,15 @@ import Services from './MainComponents.js/Services';
 import Protfolio from './MainComponents.js/Protfolio';
 import Contact from './MainComponents.js/Contact';
 import Navbar from './MainComponents.js/Navbar';
+import NavbarTwo from './MainComponents.js/NavbarTwo';
+
 
 function App() {
 
   const router = createBrowserRouter([
     {
       path: '/',
-      element: <><Navbar/><Main /></>
+      element: <><NavbarTwo/><Main /></>
     },
     {
       path: '/About',
