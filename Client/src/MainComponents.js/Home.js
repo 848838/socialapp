@@ -1,188 +1,219 @@
-import React from 'react'
-import bg from '../Assets/new texure.jpg'
-import rect from '../Assets/Rectangle 5.png'
-import Footer from './Footer'
-function Home() {
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import defaultImage from '../Assets/default.webp'; // Path to your default image
+import moment from 'moment';
+import Skeleton from '../Skeleton';
+import io from 'socket.io-client';
+import { Modal } from '@mui/material'; // Import MUI Modal
+
+function Home({ userId }) {
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [commentInput, setCommentInput] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [comments, setComments] = useState([]);
+
+  const token = localStorage.getItem('authtoken');
+  const navigate = useNavigate();
+
+  // Fetch the images from the backend
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/images', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setImages(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching images:', error);
+        setLoading(false);
+      }
+    };
+    fetchImages();
+  }, [token]);
+  const handleLike = async (postId) => {
+    try {
+      const response = await axios.post(`http://localhost:5000/like/${postId}`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setImages((prevImages) =>
+        prevImages.map((post) =>
+          post._id === postId ? { ...post, likeCount: response.data.likeCount, userHasLiked: response.data.userHasLiked } : post
+        )
+      );
+    } catch (error) {
+      console.error('Error liking post:', error);
+    }
+  };
+  // Function to handle comment icon click
+  const handleCommentClick = async (image) => {
+    setSelectedImage(image);
+    setIsModalOpen(true);  // Open the modal when comment icon is clicked
+
+    // Fetch comments for the selected image/post
+    const fetchedComments = await fetchComments(image._id);
+    setComments(fetchedComments);
+  };
+
+  const fetchComments = async (postId) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/post/${postId}/comments`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+      return [];
+    }
+  };
+
+  const handleCommentInputChange = (postId, value) => {
+    setCommentInput((prev) => ({
+      ...prev,
+      [postId]: value,
+    }));
+  };
+
+  const handleCommentSubmit = async (postId) => {
+    try {
+      const response = await axios.post(`http://localhost:5000/post/${postId}/comments`, {
+        commentText: commentInput[postId] || '',
+      }, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      // Update comments with the new one
+      setComments((prev) => [...prev, response.data]);
+
+      // Clear comment input field
+      setCommentInput((prev) => ({ ...prev, [postId]: '' }));
+    } catch (error) {
+      console.error('Error adding comment:', error);
+    }
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);  // Close the modal
+    setSelectedImage(null);  // Clear selected image
+  };
+  const handleUserClick = (userId) => {
+    navigate(`/Profile/${userId}`); // Navigate to the clicked user's profile
+};
+
+  if (loading) {
     return (
-        <>
-        <div className="image-container">
-        <img src={bg} alt="Background" className="responsive-image" />
-        <div className="overlay">
-           <div style={{ display: 'flex',  marginTop:10}}>
+      <div style={{ marginTop: 100 }} className='image-flow-container'>
+        {Array.from({ length: 100 }).map((_, index) => (
+          <Skeleton key={index} />
+        ))}
+      </div>
+    );
+  }
 
-          <h1 className='we_are' style={{ }}>WE ARE </h1>
-          <p style={{}}  className='we_are3'>Turinig Your Brand Online Dreams into Reality With Social Media Magic  SEO , and Stunning Web Design</p>
+  return (
+    <>
+
+      {
+        !localStorage.getItem('authtoken') ? (<h1 style={{ color: 'white' }}>Login please to view posts </h1>) : (
+          <h1 style={{ color: 'white' }}>explore</h1>
+
+        )
+      }
+      <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: 70, backgroundColor: 'rgb(13,17,23)' }} >
+        {images.map((image) => (
+          <div key={image._id} style={{ border: '1px solid rgb(61,68,77)', height: '100%', width: 300, backgroundColor: 'rgb(21,27,35)', borderRadius: 10, margin: 'auto', marginTop: 100 }}>
+            <div style={{ display: 'flex', margin: 'auto' }}>
+              <img
+                style={{ width: 40, height: 40, borderRadius: 100, margin: 19, marginLeft: 20 }}
+                src={image.profileImage || defaultImage}
+                alt="Profile"
+              />
+              <div onClick={() => navigate(`/Profile/${image.userId}`)} style={{ cursor: 'pointer', margin: 'auto', fontWeight: 'bold', color: "black" }}>
+                <h4  style={{ color: 'white' }}>{image.userName}</h4>
+              </div>
+              <p style={{ color: 'grey', margin: 'auto', fontWeight: '500', marginLeft: 10, fontSize: 13 }}>
+                {moment(image.createdAt).fromNow()}
+              </p>
+            </div>
+            <img
+              style={{ cursor: 'pointer', margin: 'auto', height: 200, width: '100%' }}
+              src={image.imageUrl}
+              onClick={() => setSelectedImage(image)} // Set image in modal
+              alt="Post"
+            />
+            <div style={{ display: 'flex', margin: 20, marginLeft: 20, gap: 19, cursor: 'pointer' }}>
+              {image.userHasLiked ?
+                <i id='liked' onClick={() => handleLike(image._id)} className="bi bi-heart-fill"></i>
+                : <i id='unliked' onClick={() => handleLike(image._id)} className="bi bi-heart"></i>}
+              <p style={{ fontWeight: 'bold', color:'white'}}>{image.likeCount} likes</p>
+              <i 
+                className="bi bi-chat"
+                style={{ fontSize: 28, marginTop: -10 ,color:'white' }}
+                onClick={() => handleCommentClick(image)} // Open comment modal
+              ></i>
+            </div>
+          </div>
+        ))}
+      </div>
 
 
+      {/* Modal to display comments */}
+      <Modal open={isModalOpen} onClose={handleModalClose}>
+        <div
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'black',
+            color: 'white',
+            padding: '20px',
+            borderRadius: '10px',
+            width: '400px',
+          }}
+        >
+          {selectedImage && (
+            <>
+              <h2>Comments for {selectedImage.userName}'s post</h2>
+              <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                {comments.map((comment) => (
+                  <div key={comment._id} style={{ display: 'flex', marginBottom: '30px' }}>
+                    <img
+                      src={comment.userId?.profileImage || defaultImage}
+                      alt="Profile"
+                      style={{ width: 30, height: 30, borderRadius: '50%' }}
+                    />
+                    <span tyle={{ fontWeight: 'bold', marginLeft: 10 }}>
+                      {comment.userId?.name || 'Anonymous'}
+                    </span>    :
+                    <p style={{ display: 'flex', marginLeft: 10 }}>{comment.commentText}</p>
+                  </div>
+                ))}
+
+              </div>
+              <input
+                type="text"
+                value={commentInput[selectedImage._id] || ''}
+                onChange={(e) => handleCommentInputChange(selectedImage._id, e.target.value)}
+                placeholder="Add a comment..."
+                style={{ width: '100%', padding: '10px', borderRadius: '5px', marginTop: '10px', marginLeft: -10 , backgroundColor: 'rgb(21,27,35)', color:'white' }}
+              />
+              <button
+                onClick={() => handleCommentSubmit(selectedImage._id)}
+                style={{ cursor: 'pointer', marginTop: '10px', padding: '10px', backgroundColor: 'orange', color: 'white', border: 'none', borderRadius: '5px' }}
+              >
+                Comment
+              </button>
+            </>
+          )}
         </div>
-
-        <h1 className='we_are2'  >CREATIVE <span className='Agency_color'>AGENCY</span> </h1>
-
-        <p  className='we_are4'>Turinig Your Brand Online Dreams into Reality With Social Media Magic  SEO , and Stunning Web Design</p>
- 
-           <button className='Button_contact_me'>Connect With Us
-           <i id='buttonHover' className="bi bi-chevron-right"></i>
-
-           </button>
-
-        </div>
-        
-    </div> 
-    {/* about section at home */}
-    <div style={{marginTop:-4 , backgroundColor:'rgb(33, 33, 33)',height:'100%'}} >
-    <div className="container">
-            <div className="container-box">
-             <img className='img_about' src={rect}/>
-                
-            </div>
-            <div className="container-box">
-                <h2 className='About_us_font'>ABOUT<span style={{color:'rgb(181,115,76)'}}>US</span></h2>
-                <p className='About_us_para'>Pixel Forage Studio , is dedicated to crafting exceptional web design and digital solutions. As a fresher and dynamic team , we blend creativity with surgery to bring your vision to life . Let's build something extraordinary together.</p>
-            </div>
-        </div>
-    </div> 
-    <div style={{marginTop:-4 , backgroundColor:'rgb(26,26,26)',height:'100%'}} >
-    <div style={{}} >
-    <div style={{ display: 'flex', justifyContent:'center'}}>
-
-<h1 className='we_are25' style={{ }}>OUR </h1>
-<button className='about_buttoncopy'>
-    Get in Touch
-    <i className="bi bi-chevron-right"></i>
-
-    </button>
-<p  className='we_are3'>Turinig Your Brand Online Dreams into Reality With Social Media Magic  SEO , and Stunning Web Design</p>
-
-
-</div>
-
-<div style={{margin:'auto',}}>
-<button  className='about_button'>
-    Get in Touch
-    <i className="bi bi-chevron-right"></i>
-
-    </button>
-        <h1 className='we_are23'  >SERVICES </h1>
-</div>
-
-        <p  className='we_are4'>Turinig Your Brand Online Dreams into Reality With Social Media Magic  SEO , and Stunning Web Design</p>
- 
-
-        </div>  
-        <div style={{marginTop:60 , width:'80%', margin:'auto',padding:30}}>
-            <div style={{border:'1px solid white' }}></div>
-            <div style={{display:'flex', justifyContent:'space-between'}}>
-                <h1 style={{color:'white', fontSize:60 , marginTop:10}}>UI/UX DESIGNS</h1>
-                <i style={{color:'white', fontSize:90, marginTop:-10}} class="bi bi-arrow-right-short"></i>
-            </div>
-
-            <div style={{border:'1px solid white', marginTop:14 }}></div>
-            <div style={{display:'flex', justifyContent:'space-between'}}>
-                <h1 style={{color:'white', fontSize:60 , marginTop:10}}>GRAPHIC DESIGNS</h1>
-                <i style={{color:'white', fontSize:90, marginTop:-10}} class="bi bi-arrow-right-short"></i>
-            </div>
-            <div style={{border:'1px solid white' , marginTop:14 }}></div>
-            <div style={{display:'flex', justifyContent:'space-between'}}>
-                <h1 style={{color:'white', fontSize:60 , marginTop:10}}>BRANDING</h1>
-                <i style={{color:'white', fontSize:90, marginTop:-10}} class="bi bi-arrow-right-short"></i>
-            </div>
-            <div style={{border:'1px solid white', marginTop:14  }}></div>
-            <div style={{display:'flex', justifyContent:'space-between'}}>
-                <h1 style={{color:'white', fontSize:60 , marginTop:10}}>SM MARKETS/MANAGEMENT</h1>
-                <i style={{color:'white', fontSize:90, marginTop:-10}} class="bi bi-arrow-right-short"></i>
-            </div>
-            <div style={{border:'1px solid white', marginTop:14  }}></div>
-            <div style={{display:'flex', justifyContent:'space-between'}}>
-                <h1 style={{color:'white', fontSize:60 , marginTop:10}}>SEO</h1>
-                <i style={{color:'white', fontSize:90, marginTop:-10}} class="bi bi-arrow-right-short"></i>
-            </div>
-            <div style={{border:'1px solid white', marginTop:14  }}></div>
-        </div>
-
-
-
-
-
-
-        {/* OUR work section */}
-        <div style={{backgroundColor:"rgb(33,33,33) ", height:'40vh'}} >
-    <div style={{ display: 'flex', justifyContent:'center'}}>
-
-<h1 className='we_are25' style={{ }}>OUR </h1>
-<p  className='we_are3'>Turinig Your Brand Online Dreams into Reality With Social Media Magic  SEO , and Stunning Web Design</p>
-
-
-</div>
-
-<div style={{margin:'auto',}}>
-
-        <h1 className='we_are235'  >WORKS </h1>
-</div>
-
-        <p  className='we_are4'>Turinig Your Brand Online Dreams into Reality With Social Media Magic  SEO , and Stunning Web Design</p>
- 
-
-        </div>  
-
-
-
-        {/* soon to be updated */}
-        <div style={{backgroundColor:"rgb(54,54,54) " , height:'90vh' }} >
-    <div style={{ display: 'flex', justifyContent:'center'}}>
-
-<h1 className='we_are256' style={{ }}>SOON TO BE</h1>
-
-
-</div>
-
-<div style={{margin:'auto',}}>
-
-        <h1 className='we_are2356'  >UPDATED </h1>
-</div>
-
- 
-
-        </div>  
-
-{/* near footer area */}
-<div style={{ display:'flex', justifyContent:'center'}}>
-    <img style={{height:'45vh', width:'90%', opacity:'40%', borderRadius:20}} src={bg} className='responsive-image'/>
-<div className='bottom_text'><h1>READY TO ELIVATE YOUR <span style={{color:'rgb(181,115,76)'}}>BRAND</span></h1>
-<p className='para_footer_near'>Pixel Forage is here to bring your ideas to life , Pixel by Pixel . Contact us for exceptional web design, creative branding , and strategic marketing . Let's  create someting incredible!</p>
-                        <button className='Button_contact_mes'>Connect With Us
-                            <i id='buttonHoverss' className="bi bi-chevron-right"></i>
-
-                        </button>
-</div>
-
-
-</div>
-<div style={{marginTop:-350}}> 
-
-        <Footer/>
-</div>
-
-
-    </div> 
+      </Modal>
     </>
-
-    )
+  );
 }
 
-export default Home
-
-
-
-
-
-
-
-    //     <div className="background-container">
-    //     <div className="overlay">
-    
-
-
-    // 
-    //     </div>
-
-    // </div>
+export default Home;

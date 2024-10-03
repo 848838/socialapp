@@ -39,8 +39,8 @@ function Footer() {
 
                     <h3 style={{ fontWeight: '700' }}>Contact</h3>
                     <div style={{ gap: 10, marginTop: 10, margin: 10 }}>
-                        <li style={{ fontWeight: 'bold', marginTop: 10 }}>+91 8147057109</li>
-                        <li style={{ fontWeight: 'bold', marginTop: 10 }}>Contact@pixelforgestudio.com</li>
+                        <li style={{ fontWeight: 'bold', marginTop: 10,  listStyle:'none'}}>+91 8147057109</li>
+                        <li style={{ fontWeight: 'bold', marginTop: 10 ,  listStyle:'none'}}>Contact@pixelforgestudio.com</li>
 
                     </div>
 

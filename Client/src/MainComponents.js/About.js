@@ -1,88 +1,92 @@
-import React from 'react'
+import React, { useEffect, useId, useState } from 'react'
 import bg from '../Assets/text bg.jpg'
 import asset from '../Assets/inkpx-curved-text.png'
 import Footer from './Footer'
+import axios from 'axios';
+import defaultImage from '../Assets/default.webp'; // Path to your default image
+import { Link, useNavigate } from 'react-router-dom';
+import Search from './Search';
+import ProfileSearch from './ProfileSearch';
 
 function About() {
+    const [uploadedPost, setUploadedPost] = useState([])
+
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+    const [sortedUsers, setSortedUsers] = useState([]);
+
+    useEffect(() => {
+        // Function to fetch signed-in users
+        const fetchUsers = async () => {
+            try {
+                const res = await axios.get('http://localhost:5000/all-user-data'); // Fetch all users from the backend
+                setUsers(res.data.data);
+                setLoading(false);
+                const sorted = [...res].sort((a, b) => a.name.localeCompare(b.name));
+                setSortedUsers(sorted);
+            } catch (err) {
+                console.error('Error fetching users:', err);
+                setLoading(false);
+            }
+        };
+
+        fetchUsers(); // Fetch users on component mount
+    }, []);
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    const handleUserClick = (userId) => {
+        navigate(`/Profile/${userId}`); // Navigate to the clicked user's profile
+    };
+
+    const isNewUser = (index) => {
+        // Assume the first few users in the sorted list are the newest
+        const NEW_USER_THRESHOLD = 10; // Example threshold for "new" users
+        return index < NEW_USER_THRESHOLD;
+    };
+    ;
     return (
-        <div style={{ backgroundImage: `url(https://i.ibb.co/kVnxfK9/udpae.jpg)` }} >
-            <div className='About_heading'>
+        <>
+            <ProfileSearch />
+            <h1 style={{ color: 'white', marginTop: 100, marginLeft: 30 }}> Friend Suggestions</h1>
 
-                <h1 style={{ marginTop: 100 }} className='about_header'>
-                    ABOUT <span style={{ color: "rgb(181,115,76)" }}>US</span>
+            <div style={{display:'flex', flexWrap:'wrap'}} className="image-flow-container">
+                {users.map((user, index) => (
+
+                    <div style={{ display: 'flex', border: '1px solid rgb(61,68,77)', height: 100, width: '30 %', marginTop: 10, backgroundColor: 'rgb(13,17,23)', borderRadius: 10, flexWrap:'wrap' }}>
 
 
-                </h1>
+                        {
+                            users ? (
+                                <img style={{ display: 'flex', height: 50, width: 50, borderRadius: 100, margin: 'auto' }} src={user.profileImage ? user.profileImage : defaultImage} />
 
+                            ) : (
+                                (<img style={{ height: 50, width: 50, borderRadius: 100, margin: 'auto' }} src={defaultImage} />)
+                            )
+                        }
+                        <div style={{ display: 'flex', margin: 'auto' }}>
+
+
+
+                        </div>
+
+                        <div key={user._id} onClick={() => handleUserClick(user._id)} style={{ cursor: 'pointer', margin: ' auto', display: 'flex', fontWeight: 'bold' }}>
+                            <h3 style={{ color: 'white' }}>{user.name}</h3>
+                            {isNewUser(index) && <span style={{ color: 'red', marginLeft: 30 }}> (New User)</span>}
+                        </div>
+
+                    </div>
+
+                ))}
             </div>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', width: "80%" }} className='circle_para'>
-
-                <p style={{}} className='para_about'>Welcome to Pixel Forge Studio! We're a fresh and dynamic design and digital marketing agency based in the vibrant city of Bangalore. Our passion is helping businesses of all sizes boost their online presence with creative web design, eye-catching branding, and smart digital marketing strategies. At Pixel Forge Studio, we're all about turning your ideas into stunning and effective digital experiences.
-
-
-
-                </p>
-                <img className='rotation_circle' src={asset} />
-
-
-
-            </div>
-            <img className='rotation_circle2' src={asset} />
-
-
-
-
-
-            {/* our vision */}
-
-            <div style={{ marginTop: 50 }} >
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-
-                    <h1 className='our_mission' style={{}}>OUR </h1>
-
-                    <p className='we_are3'>Our mission is to deliver high-quality, creative, and strategic digital solutions that help our clients achieve their business goals.</p>
-
-
-                </div>
-                <p style={{ marginTop: -10, marginLeft: 180, width: '20%' }} className='we_are3'>We aim to be a leading creative agency, transforming ideas into impactful digital experiences and setting new standards for excellence.</p>
-
-                <div style={{ marginTop: -140 }}>
-
-                    <h1 className='our_vision'  >VISION </h1>
-
-                </div>
-
-                <p  style={{ marginTop:10 }} className='we_are4'>Our mission is to deliver high-quality, creative, and strategic digital solutions that help our clients achieve their business goals.</p>
-                <p style={{ marginTop:10 }} className='we_are4'>We aim to be a leading creative agency, transforming ideas into impactful digital experiences and setting new standards for excellence.</p>
-
-
-
-
-            </div>
-
-
-            <div>
-
-            </div>
-            {/* near footer area */}
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 100 }}>
-                <img style={{ height: '45vh', width: '90%', opacity: '40%', borderRadius: 20 }} src={bg} className='responsive-image' />
-                <div className='bottom_text'><h1>READY TO ELIVATE YOUR <span style={{ color: 'rgb(181,115,76)' }}>BRAND</span></h1>
-                    <p className='para_footer_near'>Pixel Forage is here to bring your ideas to life , Pixel by Pixel . Contact us for exceptional web design, creative branding , and strategic marketing . Let's  create someting incredible!</p>
-                    <button className='Button_contact_mes'>Connect With Us
-                        <i id='buttonHoverss' className="bi bi-chevron-right"></i>
-
-                    </button>
-                </div>
-
-
-            </div>
-            <div style={{ marginTop: -400 }}>
-                <Footer />
-            </div>
-        </div>
+        </>
     )
 }
 
 export default About
+
+
+

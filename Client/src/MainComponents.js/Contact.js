@@ -61,7 +61,7 @@ function Contact() {
 
                     <h1 className='our_mission' style={{}}>LET'S </h1>
 
-                    <p className='we_are3'>We'd love to hear from you! Whether you have a question, need a consultation, or want to discuss a potential project, feel free to reach out to our team</p>
+                    <p className='we_are3997'>We'd love to hear from you! Whether you have a question, need a consultation, or want to discuss a potential project, feel free to reach out to our team</p>
 
 
                 </div>
