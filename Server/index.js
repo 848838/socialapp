@@ -24,6 +24,15 @@ const io = new Server(server, {
         methods: ["GET", "POST"]
     }
 });
+const path = require('path');
+module.exports = {
+  entry: './index.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'index.js',
+  },
+  mode: 'production', // for minification
+};
 
 const router = express.Router()
 app.use(bodyParser.urlencoded({ extended: false }));
