@@ -24,7 +24,7 @@ const io = new Server(server, {
         methods: ["GET", "POST"]
     }
 });
-const path = require('path');
+
 module.exports = {
   entry: './index.js',
   output: {
